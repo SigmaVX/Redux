@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Moments</title>
+
+    <!-- Bootsrap CSS, AJAX, & jQuery CDN Links -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.6/jquery.fullpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+    <!-- CSS & Font Files -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+
+</head>
+
+<body>
+
+    <!-- Start Section -->
+    <div id="splash">
+        <video autoplay muted loop id="videoHolder">
+            <source class="video" src="./assets/images/sky.mp4" type="video/mp4">
+        </video>
+
+        <div class="section" id="start-section">
+            <div class="container" id="start-page">
+                <h1 class="text-center">Moments</h1>
+                <h2 class="text-center">Relive Your Moments</h2>
+
+                    <div class="offset-md-4 col-md-4 col-12 form-group text-center" id="first-date">
+                        <label class="text-center" for="moment-label">Your Moment | Enter A Date</label>
+                        <input type="text" class="form-control" id="dateInput" placeholder="Example: 11/5/1955">
+                    </div>
+
+                    <form class="offset-md-4 col-md-4 col-12 justify-content-center" id="addTrainsForm">
+                        
+                        <div class="form-group text-center">
+                            <button type="submit" id="add" class="btn btn-block">Add Moment</button>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" id="start" class="btn btn-block">Start</button>
+                        </div>
+                    </form>
+                    <div class="row justify-content-center" id="moment-count-area">
+                        <div class="text-center" id="count-section">
+                            <!-- Add Counter Here -->
+                            <h3 class="col-12">Moments</h3>
+                            <div id="moment-counter">0</div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <!--Footer Section-->
+        <footer>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 pt-4 pb-3 text-center">
+                        <p>
+                         <strong>© Copyright 2018 GTJ</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+
+    <!-- Moments Section -->
+    
+    <div id="fullpage">
+
+        <!-- Moments Added By jQuery Here -->
+
+
+
+        <!-- Modal - No Dates -->
+        <div class="modal fade" id="noDatesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error - No Moments Added</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You Must Enter A Date To Get Started!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-block" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal - Empty Add Date -->
+        <div class="modal fade" id="noInputModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error - Missing Date</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You Must Enter A Date To Add A Moment. Dates should be formatted as MM/DD/YYYY.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-block" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal - Invalid Date -->
+        <div class="modal fade" id="badDateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error - Invalid Date</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        It looks like you entered and invalid date.  Please pick a date after 1950 that is formatted as MM/DD/YYYY.
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-block" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <!-- Results Section -->
+        <div class="section" id="results">
+            <div class="container" id="results-section">
+                <div class="row card">
+                    <div class="card-header text-center">
+                        Your Moments
+                        <br>
+                        <span class="cardSubHeader">Copy Your Links</span>
+                    </div>
+                    <table class="table text-center" id="results-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Movie Poster
+                                </th>
+                                <th scope="col">
+                                    Movie Poster
+                                </th>
+                                <th scope="col">
+                                    Headline
+                                </th>
+                                <th scope="col">
+                                    Headline
+                                </th>
+                                <th scope="col">
+                                    Extra
+                                </th>
+                                <th scope="col">
+                                    Extra
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRows">
+                            <!-- Add Table Data Here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap, Firebase, Moment.JS, & JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.6/jquery.fullpage.js"></script>
+    <script src="./assets/javascript/jquery.easing.1.3.js"></script>
+    <script src="./assets/javascript/logic.js"></script>
+
+</body>
+
+</html>

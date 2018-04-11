@@ -1,0 +1,213 @@
+:
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="row justify-content-center" id="moment-count-area">
+        <div class="text-center" id="count-section">
+            <!-- Add Counter Here -->
+            <h3 class="col-12">Moments</h3>
+            <div id="moment-counter">7</div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Year</label>
+            <input type="text" class="form-control" id="userYear" placeholder="Format: YYYY">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Month</label>
+            <input type="text" class="form-control" id="userMonth" placeholder="Format: MM">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Month</label>
+            <input type="text" class="form-control" id="userDay" placeholder="Format: DD">
+        </div>
+    </form>
+
+    <button type="button" class="btn btn-primary" id="start">Submit</button>
+    <button type="button" class="btn btn-primary" id="add">add</button>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // decalare our arrays
+$(document).ready(function () {
+    var dates = [];
+    var movieArtOne = [];
+    var movieArtTwo = [];
+    var movieArtThree = [];
+    var tvOne = [];
+    var tvTwo = [];
+    var tvThree = [];
+    var newsTextOne = [];
+    var newsTextTwo = [];
+    var newsTextThree = [];
+    var newsArtOne = [];
+    var newsArtTwo = [];
+    var newsArtThree = [];
+    var momentCounter = 0;
+
+
+    // lays out the foundation for the future object
+
+    function Searchdate(day, month, year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+    // resets the form for the user
+    function clearfields() {
+        $("#userDay").val('');
+        $("#userMonth").val('');
+        $("#userYear").val('');
+
+    }
+    // grabs the date and used for the onclickevent.(reffred to later)
+    //pushes the added date into the dates array via newSearchdate
+    function addDate() {
+        var queryDay = $("#userDay").val().trim();
+        var queryMonth = $("#userMonth").val().trim();
+        var queryYear = $("#userYear").val().trim();
+        var addedDate = new Searchdate(queryDay, queryMonth, queryYear);
+        dates.push(addedDate);
+        clearfields();
+    }
+
+    //builds the search array using the variables declared in the next function querySearch
+    //${x} = template literals(aka "varible"+)
+
+    function movieQueryCall(a, b) {
+        $.ajax({
+            url: `https://api.themoviedb.org/3/discover/movie?primary_release_date.lte=${a}-${b}&primary_release_date.gte=${a}-${b}&page=1&include_video=false&include_adult=false&sort_by=popularity.desc&language=en-US&api_key=cfa5e4068ccc1d88d711e2257e1e0ec5`,
+            method: "GET",
+            success: function (res) {
+                movieArtOne.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    0].poster_path);
+                movieArtTwo.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    1].poster_path);
+                movieArtThree.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    2].poster_path);
+             }
+        })
+
+
+        $.ajax({
+            url: `https://api.themoviedb.org/3/discover/tv?include_null_first_air_dates=false&timezone=America%2FNew_York&page=1&air_date.lte=${a}-${b}&air_date.gte=${a}-${b}&sort_by=popularity.desc&language=en-US&api_key=cfa5e4068ccc1d88d711e2257e1e0ec5`,
+            method: "GET",
+            success: function (res) {
+                tvOne.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    0].poster_path);
+                tvTwo.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    1].poster_path);
+                tvThree.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
+                    2].poster_path);
+            }
+        })
+    }
+
+    function nyTimesQueryCall(a, b) {
+        var newsArr = [];
+        $.ajax({
+            url: `https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=6bbf303c1d5f47a8b9b82a475fe15fe7&q=national%20news&begin_date=${a}${b}01&sort=oldest&page=1&facet_filter=true`,
+            method: "GET",
+            success: function (res) {
+                newsTextOne.push(res.response.docs[0].headline.print_headline);
+                newsTextTwo.push(res.response.docs[1].headline.print_headline);
+                newsTextThree.push(res.response.docs[2].headline.print_headline);
+                
+                
+                for (var n = 0; n <= 3; n++) {
+                    var artArr = res.response.docs[n].multimedia;
+                    console.log("ArtArr" + artArr);
+                    if (artArr.length < 1) {
+                        newsArr.push('imgur.com');
+                    } else {
+                        newsArr.push("https://static01.nyt.com/" + artArr[0].url);
+                    }
+                                       
+                }
+                
+                newsArtOne.push(newsArr[0]);
+                newsArtTwo.push(newsArr[1]);
+                newsArtThree.push(newsArr[2]);
+                console.log('newsartone', newsArtOne);
+                console.log('newsarttwo', newsArtTwo);
+                console.log('newsart3', newsArtThree);
+            }
+        })
+    }
+    //this function is the forloop that 
+    function querySearch() {
+        for (var i = 0; i < dates.length; i++) {
+            var x = dates[i].year;
+            var y = dates[i].month;
+            movieQueryCall(x, y);
+            nyTimesQueryCall(x, y);
+        }
+
+    }
+$("#start").on("click", function (e) {
+    if (momentCounter != 0) {
+        e.preventDefault();
+        querySearch();
+    }
+    else {
+        alert("you must enter at least one moment");
+    }
+}
+)
+    $("#add").on("click", function (e) {
+        e.preventDefault();
+        addDate();
+        momentCounter++;
+        $("#moment-counter").empty();
+        $("#moment-counter").append(momentCounter);
+        // console.log(momentCounter);
+
+    })
+
+
+})
+    </script>
+
+</body>
+
+</html>
