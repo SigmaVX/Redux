@@ -9,8 +9,11 @@ $(document).ready(function(){
 	var slideCount = 0;
 
 	// Arrays
-	var datesDisplay = ["10/25/55"];
-	var dates = ["10/25/55"];
+	var datesDisplay = ["10/25/1955"];
+	var dates = ["10/25/1955"];
+	var dayArray = [10];
+	var monthArray = [25];
+	var yearArray = [1955];
 	var movieArtOne = ["./assets/images/test-poster.jpg"];
     var movieArtTwo = ["./assets/images/test-poster.jpg"];
     var movieArtThree = ["./assets/images/test-poster.jpg"];
@@ -28,9 +31,34 @@ $(document).ready(function(){
     var musicArtThree = ["./assets/images/test-music.jpg"];
     var musicTextOne = ["Some Text For A Music Headline"];
     var musicTextTwo = ["Some Text For A Music Headline"];
-    var musicTextThree = ["Some Text For A Music Headline"]; 
-
-
+	var musicTextThree = ["Some Text For A Music Headline"]; 
+	
+	// Resets All Data In Arrays 
+	function reset(){
+		datesDisplay = []; 
+		dates = [];
+		dayArray = [];
+		monthArray = [];
+		yearArray = [];
+		movieArtOne = [];
+		movieArtTwo = [];
+		movieArtThree = [];
+		tvArtOne = [];
+		tvArtTwo = [];
+		tvArtThree = [];
+		newsTextOne = [];
+		newsTextTwo = [];
+		newsTextThree = [];
+		newsArtOne = [];
+		newsArtTwo = [];
+		newsArtThree = [];
+		musicArtOne=[];
+		musicArtTwo = [];
+		musicArtThree = [];
+		musicTextOne = [];
+		musicTextTwo = [];
+		musicTextThree = []; 
+	}
 
     // Adds date from user input to array if passes validation
     function addDate() {  
@@ -65,8 +93,13 @@ $(document).ready(function(){
 			var month = newMoment.format('M');
 			var day   = newMoment.format('D');
 			var year  = newMoment.format('YYYY');
-			
 			console.log("Test Dates:" + month, day, year);
+
+			// Adds Date Items To Arrays
+			dayArray.push(day);
+			monthArray.push(month);
+			yearArray.push(year);
+			console.log(dayArray,monthArray,yearArray);
 		};
 	};
 	
@@ -81,8 +114,6 @@ $(document).ready(function(){
 	}
 	
 	
-    
-
 // +++++++++++++++++++++++  API Work ++++++++++++++++++++++++++++
 
     //builds the search array using the variables declared in the next function querySearch
@@ -94,6 +125,7 @@ $(document).ready(function(){
 			method: "GET",
 			async: false ,
             success: function (res) {
+				console.log(res);
                 movieArtOne.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
                     0].poster_path);
                 movieArtTwo.push("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + res.results[
@@ -123,56 +155,56 @@ $(document).ready(function(){
         })
     }
 
-    function nyTimesQueryCall(a, b) {
-        var newsArr = [];
-        $.ajax({
-            url: `https://cors-anywhere.herokuapp.com/http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=6bbf303c1d5f47a8b9b82a475fe15fe7&q=national%20news&begin_date=${a}${b}01&sort=oldest&page=1&facet_filter=true`,
-			method: "GET",
-			async: false,
-            success: function (res) {
-                newsTextOne.push(res.response.docs[0].headline.print_headline);
-                newsTextTwo.push(res.response.docs[1].headline.print_headline);
-                newsTextThree.push(res.response.docs[2].headline.print_headline);
+//     function nyTimesQueryCall(a, b) {
+//         var newsArr = [];
+//         $.ajax({
+//             url: `https://cors-anywhere.herokuapp.com/http://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=6bbf303c1d5f47a8b9b82a475fe15fe7&q=national%20news&begin_date=${a}${b}01&sort=oldest&page=1&facet_filter=true`,
+// 			method: "GET",
+// 			async: false,
+//             success: function (res) {
+//                 newsTextOne.push(res.response.docs[0].headline.print_headline);
+//                 newsTextTwo.push(res.response.docs[1].headline.print_headline);
+//                 newsTextThree.push(res.response.docs[2].headline.print_headline);
                 
                 
-                for (var n = 0; n <= 3; n++) {
-                    var artArr = res.response.docs[n].multimedia;
-                    if (artArr.length < 1) {
-                        newsArr.push(movieArtFour);
-                    } else {
-                        newsArr.push("https://static01.nyt.com/" + artArr[0].url);
-                    }
-                                  console.log('newsarr:',newsArr);     
-                }
+//                 for (var n = 0; n <= 3; n++) {
+//                     var artArr = res.response.docs[n].multimedia;
+//                     if (artArr.length < 1) {
+//                         newsArr.push(movieArtFour);
+//                     } else {
+//                         newsArr.push("https://static01.nyt.com/" + artArr[0].url);
+//                     }
+//                                   console.log('newsarr:',newsArr);     
+//                 }
                 
-                newsArtOne.push(newsArr[0]);
-                newsArtTwo.push(newsArr[1]);
-                newsArtThree.push(newsArr[2]);
-                console.log('newsartone', newsArtOne);
-                console.log('newsarttwo', newsArtTwo);
-                console.log('newsart3', newsArtThree);
-            }
-        })
-    }
-    //this function is the forloop that 
-    function querySearch() {
-        for (var i = 0; i < dates.length; i++) {
-            var x = dates[i].year;
-			var y = dates[i].month;
-			dateDisplayCall(x, y);
-            movieQueryCall(x, y);
-            nyTimesQueryCall(x, y);
-        }
+//                 newsArtOne.push(newsArr[0]);
+//                 newsArtTwo.push(newsArr[1]);
+//                 newsArtThree.push(newsArr[2]);
+//                 console.log('newsartone', newsArtOne);
+//                 console.log('newsarttwo', newsArtTwo);
+//                 console.log('newsart3', newsArtThree);
+//             }
+//         })
+//     }
+//     //this function is the forloop that 
+//     function querySearch() {
+//         for (var i = 0; i < dates.length; i++) {
+//             var x = dates[i].year;
+// 			var y = dates[i].month;
+// 			dateDisplayCall(x, y);
+//             movieQueryCall(x, y);
+//             nyTimesQueryCall(x, y);
+//         }
 
-    }
-function dateDisplayCall(x, y){
-	var dateD = y + "/" + x ;
-	datesDisplay.push(dateD);
-	// console.log('datedispay=', datesDisplay);
+//     }
+// function dateDisplayCall(x, y){
+// 	var dateD = y + "/" + x ;
+// 	datesDisplay.push(dateD);
+// 	// console.log('datedispay=', datesDisplay);
 
-}
+// }
 
-// +++++++++++++++++++++ Tony Work +++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++ Dynamic Design jQuery Work +++++++++++++++++++++++++++++++++
 
 	// Initializes Fullwidth JS
 	function init(){
@@ -458,33 +490,13 @@ function dateDisplayCall(x, y){
 			}
 	}
 
-	// Resets All Data In Arrays 
-	function reset(){
-		datesDisplay = []; 
-		dates = [];
-		 movieArtOne = [];
-		 movieArtTwo = [];
-		 movieArtThree = [];
-		 tvArtOne = [];
-		 tvArtTwo = [];
-		 tvArtThree = [];
-		 newsTextOne = [];
-		 newsTextTwo = [];
-		 newsTextThree = [];
-		 newsArtOne = [];
-		 newsArtTwo = [];
-		 newsArtThree = [];
-		 musicArtOne=[];
-		 musicArtTwo = [];
-		 musicArtThree = [];
-		 musicTextOne = [];
-		 musicTextTwo = [];
-		 musicTextThree = []; 
-	}
+	
+
+	// ++++++++++++++++++++++++ Event Listeners +++++++++++++++++++++++++
 
 	// Adding Dates Into Array
 	$("#add").on("click", function (event) {
-		// Prevents default page load
+		// Prevents Default Page Load
         event.preventDefault();
 		addDate();
 	})
